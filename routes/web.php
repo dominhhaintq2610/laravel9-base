@@ -15,8 +15,5 @@ use Illuminate\Support\Facades\DB;
 */
 
 Route::get('/', function () {
-    $places = DB::select('select * from places');
-    dd($places);
-
     return view('welcome');
 });

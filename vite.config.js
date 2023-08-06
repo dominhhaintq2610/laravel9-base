@@ -10,4 +10,14 @@ export default defineConfig({
             refresh: true,
         }),
     ],
+    server: {
+        https: false,
+        host: true,
+        strictPort: true,
+        port: 3000,
+        hmr: {host: 'localhost', protocol: 'ws'},
+        watch: {
+            usePolling:true,
+        }
+    },
 });

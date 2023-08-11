@@ -13,6 +13,8 @@
         "vite": "^4.4.8"
     },
     "dependencies": {
-        "@inertiajs/vue3": "^1.0.9"
+        "@inertiajs/vue3": "^1.0.9",
+        "pinia": "^2.1.6",
+        "vue": "^3.3.4"
     }
 }

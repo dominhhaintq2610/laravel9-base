@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\StockController;
 use Inertia\Inertia;
 
 /*
@@ -23,6 +24,8 @@ Route::get('/', function () {
         'frameworks' => ['Laravel', 'Vue', 'Inertia']
     ]);
 });
+
+Route::get('/stock', [StockController::class, 'index']);
 
 Route::get('/users', function () {
     sleep(3);

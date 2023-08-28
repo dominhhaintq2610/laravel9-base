@@ -1,5 +1,20 @@
 <template>
     <div class="container">
+        <div class="mx-4 mt-2 mb-5">
+            <form class="d-flex align-items-center" @submit.prevent="search()">
+                <label for="symbol" class="fw-bold">Mã:</label>
+                <input type="text" id="symbol" class="form-control width-100 ms-2" v-model="symbol">
+
+                <label for="from" class="fw-bold ms-3">Từ:</label>
+                <input type="date" id="from" class="form-control width-150 ms-2" v-model="from">
+
+                <label for="to" class="fw-bold ms-3">Đến:</label>
+                <input type="date" id="to" class="form-control width-150 ms-2" v-model="to">
+
+                <button type="submit" class="btn btn-success ms-3">Tìm kiếm</button>
+            </form>
+        </div>
+
         <highcharts :options="chartOptions" />
     </div>
 </template>
@@ -8,10 +23,18 @@
 import {ref} from "vue";
 import {defineProps} from "vue/dist/vue";
 import {format} from "date-fns";
+import {router} from "@inertiajs/vue3";
 
 const props = defineProps({
     historicalData: {type: Object},
+    symbol: {type: String},
+    from: {type: String},
+    to: {type: String},
 });
+
+const symbol = ref(props.symbol);
+const from = ref(props.from);
+const to = ref(props.to);
 
 const stockData = ref([]);
 const chartOptions = ref({
@@ -44,14 +67,14 @@ const chartOptions = ref({
     }],
     plotOptions: {
         candlestick: {
-            color: 'red',       // Color of bullish (up) candlesticks
-            upColor: 'green',       // Color of bearish (down) candlesticks
-            lineColor: 'black',   // Color of the lines connecting the candles
+            color: 'red',
+            upColor: 'green',
+            lineColor: 'black',
         },
         heikinashi: {
-            color: 'red',       // Color of bullish (up) candlesticks
-            upColor: 'green',       // Color of bearish (down) candlesticks
-            lineColor: 'black',   // Color of the lines connecting the candles
+            color: 'red',
+            upColor: 'green',
+            lineColor: 'black',
         },
     },
     series: [{
@@ -69,9 +92,17 @@ const chartOptions = ref({
     }]
 });
 
-transformStockData();
+init();
+
+function init() {
+    transformStockData();
+}
 
 function transformStockData() {
+    if (!props.historicalData.time?.length) {
+        return;
+    }
+
     const length = props.historicalData.time.length;
 
     for (let index = 0; index < length; index++) {
@@ -103,5 +134,13 @@ function getHeikinAshiColor(open, close, high, low) {
     } else {
         return "yellow"; // Nến vàng
     }
+}
+
+function search() {
+    router.get('/stock', {
+        symbol: symbol.value,
+        from: from.value,
+        to: to.value,
+    });
 }
 </script>

@@ -11,13 +11,22 @@ class StockService implements StockServiceInterface
     /**
      * @throws GuzzleException
      */
-    public function getHistoricalData(): array
+    public function getHistoricalData(array $conditions): array
     {
-        $client = new Client();
-        $response = $client->get('https://services.entrade.com.vn/chart-api/v2/ohlcs/stock?from=1672531200&to=1693008000&symbol=VND&resolution=1D');
-        $stockData = json_decode($response->getBody(), true);
+        if (!empty($conditions['symbol']) && !empty($conditions['from']) && !empty($conditions['to'])) {
+            $symbol = strtoupper($conditions['symbol']);
+            $from = strtotime($conditions['from']);
+            $to = strtotime($conditions['to']);
 
-        return $this->transformStockData($stockData);
+            $client = new Client();
+            $url = "https://services.entrade.com.vn/chart-api/v2/ohlcs/stock?from=${from}&to=${to}&symbol=${symbol}&resolution=1D";
+            $response = $client->get($url);
+            $stockData = json_decode($response->getBody(), true);
+
+            return $this->transformStockData($stockData);
+        }
+
+        return [];
     }
 
     private function transformStockData(array $data): array

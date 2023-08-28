@@ -4,5 +4,5 @@ namespace App\Services\Contracts;
 
 interface StockServiceInterface
 {
-    public function getHistoricalData(): array;
+    public function getHistoricalData(array $conditions): array;
 }

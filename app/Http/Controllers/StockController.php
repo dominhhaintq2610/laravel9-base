@@ -22,10 +22,13 @@ class StockController extends Controller
      */
     public function index(): \Inertia\Response
     {
-        $historicalData = $this->stockService->getHistoricalData();
+        $historicalData = $this->stockService->getHistoricalData(request()->all());
 
         return Inertia::render('Stock/Index', [
-            'historicalData' => $historicalData
+            'historicalData' => $historicalData,
+            'symbol' => request('symbol'),
+            'from' => request('from'),
+            'to' => request('to'),
         ]);
     }
 }

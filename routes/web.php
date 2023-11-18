@@ -2,6 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\StockController;
+use Inertia\Inertia;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,6 +17,27 @@ use Illuminate\Support\Facades\DB;
 |
 */
 
+//Route::get('/', [UserController::class, 'show']);
 Route::get('/', function () {
-    return view('welcome');
+    return Inertia::render('Home', [
+        'name' => 'BlackFriday',
+        'frameworks' => ['Laravel', 'Vue', 'Inertia']
+    ]);
+});
+
+Route::get('/stock', [StockController::class, 'index']);
+
+Route::get('/users', function () {
+    sleep(3);
+    return Inertia::render('Users');
+});
+
+Route::get('/settings', function () {
+    return Inertia::render('Settings', [
+        'time' => now()->toDateTimeString()
+    ]);
+});
+
+Route::post('logout', function () {
+    dd(request('foo'));
 });

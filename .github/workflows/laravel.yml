@@ -33,3 +33,7 @@ jobs:
         DB_CONNECTION: sqlite
         DB_DATABASE: database/database.sqlite
       run: vendor/bin/phpunit
+    - name: phpcs
+      run: vendor/bin/phpcs
+    - name: phpmd
+      run: vendor/bin/phpmd . text phpmd.xml
